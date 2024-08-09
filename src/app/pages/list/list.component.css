@@ -1,0 +1,31 @@
+table {
+  width: 50%;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+}
+
+.mat-cell {
+  padding: 6px;
+}
+
+.submit {
+  padding: 5px;
+  margin: 25px;
+  border-color:  black;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+html {
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  height: 100vh;
+}
+
+
+
+td{
+
+  height: 60px;
+}

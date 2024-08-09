@@ -1,0 +1,19 @@
+<body>
+  <div >
+    <form [formGroup]="formProduto" (ngSubmit)="criarItem()" class="form" >
+      <label class="text">Nome:</label>
+      <input formControlName="name" class="text-input"/>
+      <br>
+      <label class="text">Descrição:</label>
+      <input formControlName="description" class="text-input" />
+      <br>
+      <label class="text">Preço:</label>
+      <input formControlName="price" type="number"  class="text-input"/>
+      <br>
+      <label class="text">Estoque:</label>
+      <input formControlName="stock" type="number" class="text-input" />
+      <br>
+      <button type="submit" class="button">Criar Produto</button>
+    </form>
+  </div>
+</body>
