@@ -65,10 +65,10 @@ export class NewItemComponent {
     this.http.post(`${this.apiurl}/api/products/create-product`, formData, { headers })
       .subscribe((res: any) => {
         if (res.success) {
-          console.log('Produto criado com sucesso!');
-          this.getItem(); // Atualiza a lista de produtos
-          this.formProduto.reset(); // Limpa o formulário
-          this.router.navigate(['/lista-produtos']);
+          alert('Produto criado com sucesso!');
+          this.getItem();
+          this.formProduto.reset();
+          window.location.reload()
         } else {
           console.error('Erro ao criar produto:', res.message);
         }

@@ -1,51 +1,42 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-  </ng-container>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Inclua o CSS do Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nome</th>
-    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-  </ng-container>
+<body>
+  <h1>Produtos</h1>
 
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef>Descrição</th>
-    <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-  </ng-container>
+  <div *ngFor="let product of dataSource" class="product-card">
+    <div>
+      <h2>{{ product.name }}</h2>
+      <p class="product-description">{{ product.description }}</p>
+      <p class="product-price">R$ {{ product.price }}</p>
+      <p class="product-stock">Itens em estoque: {{ product.stock }}</p>
+    </div>
 
-  <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef>Preço</th>
-    <td mat-cell *matCellDef="let element">{{ element.price }}</td>
-  </ng-container>
+    <div class="button">
+      <button class="submit btn btn-outline-primary" (click)="editItem(product)">
+        <i class="bi bi-pencil"></i> <!-- Ícone de editar -->
+      </button>
+      <button class="submit btn btn-outline-danger" (click)="deleteItem(product.id)">
+        <i class="bi bi-trash"></i> <!-- Ícone de excluir -->
+      </button>
+    </div>
+  </div>
 
-  <ng-container matColumnDef="stock">
-    <th mat-header-cell *matHeaderCellDef>Estoque</th>
-    <td mat-cell *matCellDef="let element">{{ element.stock }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Ações</th>
-    <td mat-cell *matCellDef="let element" style="display: flex; ">
-      <div style="width: 30px; display: flex; align-items: center; background-color: #424242;">
-        <button style="background-color: #424242;  border: none; cursor: pointer;" (click)="editItem(element)"><i style="color: white;" class="bi bi-pen"></i></button>      </div>
-      <div style="width: 30px; display: flex; align-items: center; background-color: #424242;">
-        <button style="background-color: #424242;  border: none; cursor: pointer;" (click)="deleteItem(element)"><i style="color: white;" class="bi bi-trash"></i> </button>
-
-      </div>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
-<div>
-  <button type="submit" class="submit"><a href="/new-item">Novo Item</a></button></div>
-
-  </html>
+  <div class="button">
+    <button class="submit btn btn-outline-success" (click)="adicionarProduto()">
+      <i class="bi bi-plus"></i> <!-- Ícone de adicionar -->
+    </button>
+  </div>
 
 
 
+</body>
+
+</html>

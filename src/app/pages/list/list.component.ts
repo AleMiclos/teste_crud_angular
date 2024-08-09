@@ -12,30 +12,26 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EditItemComponent } from '../edit-item/edit-item.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { NewItemComponent } from '../new-item/new-item.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [MatTableModule, HttpClientModule, ReactiveFormsModule],
+  imports: [MatTableModule, HttpClientModule, ReactiveFormsModule, CommonModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
   providers: [BsModalService]
 })
 export class ListComponent {
 
-  formProduto = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required),
-    price: new FormControl(0, Validators.required),
-    stock: new FormControl(0, Validators.required),
-
-  });
-
+  formProduto: FormGroup;
   apiurl = API_URL;
   token = localStorage.getItem('token');
   showForm = false;
   isEdit = false;
   editingItemId: number | null = null;
+  modalRef!: BsModalRef;
 
   displayedColumns: string[] = [
     'id',
@@ -50,9 +46,15 @@ export class ListComponent {
   constructor(
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    public bsModalRef: BsModalRef,
     private bsModalService: BsModalService
-  ) {}
+  ) {
+    this.formProduto = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      price: [0, Validators.required],
+      stock: [0, Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.getItem();
@@ -81,66 +83,25 @@ export class ListComponent {
       });
   }
 
-  criarItem() {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-      'Content-Type': 'application/json',
+  adicionarProduto() {
+    this.modalRef = this.bsModalService.show(NewItemComponent, {
     });
-
-    const formData = this.formProduto.value;
-    if (this.isEdit && this.editingItemId !== null) {
-      // Atualiza o item existente
-      this.http
-        .put(
-          `${this.apiurl}/api/products/update-product/${this.editingItemId}`,
-          formData,
-          { headers }
-        )
-        .subscribe(
-          (res: any) => {
-            if (res.success) {
-              console.log('Produto atualizado com sucesso!');
-              this.getItem();
-              this.toggleForm();
-            } else {
-              console.error('Erro ao atualizar produto:', res.message);
-            }
-          },
-          (error: any) => {
-            console.error('Erro ao atualizar produto:', error);
-          }
-        );
-    } else {
-
-      this.http
-        .post(`${this.apiurl}/api/products/create-product`, formData, {
-          headers,
-        })
-        .subscribe(
-          (res: any) => {
-            if (res.success) {
-              console.log('Produto criado com sucesso!');
-              this.getItem();
-              this.toggleForm();
-            } else {
-              console.error('Erro ao criar produto:', res.message);
-            }
-          },
-          (error: any) => {
-            console.error('Erro ao criar produto:', error);
-          }
-        );
-    }
+    this.modalRef.content.onClose.subscribe((result: string) => {
+      if (result === 'success') {
+        this.getItem();
+      }
+    });
   }
+
 
   editItem(element: any): void {
     const initialState: Partial<EditItemComponent> = {
       item: element,
     };
-    this.bsModalRef = this.bsModalService.show(EditItemComponent, {
+    this.modalRef = this.bsModalService.show(EditItemComponent, {
       initialState,
     });
-    this.bsModalRef.content.onClose.subscribe(() => {
+    this.modalRef.content.onClose.subscribe(() => {
       this.getItem();
     });
   }
@@ -156,12 +117,9 @@ export class ListComponent {
         .delete(`${this.apiurl}/api/products/delete-product/${id}`, { headers })
         .subscribe(
           (res: any) => {
-            if (res.success) {
-              console.log('Produto excluído com sucesso!');
-              this.getItem();
-            } else {
-              console.error('Erro ao excluir produto:', res.message);
-            }
+            alert('Produto excluído com sucesso!');
+            window.location.reload()
+            this.getItem();
           },
           (error: any) => {
             console.error('Erro ao excluir produto:', error);
