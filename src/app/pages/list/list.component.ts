@@ -1,19 +1,12 @@
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
-import { API_URL } from '../../core/environments';
-import { ReactiveFormsModule } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { EditItemComponent } from '../edit-item/edit-item.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NewItemComponent } from '../new-item/new-item.component';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { API_URL } from '../../core/environments';
+import { EditItemComponent } from '../edit-item/edit-item.component';
 
 @Component({
   selector: 'app-list',
@@ -21,7 +14,6 @@ import { CommonModule } from '@angular/common';
   imports: [MatTableModule, HttpClientModule, ReactiveFormsModule, CommonModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
-  providers: [BsModalService]
 })
 export class ListComponent {
 
@@ -31,7 +23,7 @@ export class ListComponent {
   showForm = false;
   isEdit = false;
   editingItemId: number | null = null;
-  modalRef!: BsModalRef;
+  modalRef!: NgbModalRef;
 
   displayedColumns: string[] = [
     'id',
@@ -46,7 +38,7 @@ export class ListComponent {
   constructor(
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private bsModalService: BsModalService
+    private modalService: NgbModal // Corrigido: Usando NgbModal em vez de BsModalService
   ) {
     this.formProduto = this.formBuilder.group({
       name: ['', Validators.required],
@@ -84,24 +76,18 @@ export class ListComponent {
   }
 
   adicionarProduto() {
-    this.modalRef = this.bsModalService.show(NewItemComponent, {
-    });
-    this.modalRef.content.onClose.subscribe((result: string) => {
+    this.modalRef = this.modalService.open(NewItemComponent, {});
+    this.modalRef.componentInstance.onClose.subscribe((result: string) => {
       if (result === 'success') {
         this.getItem();
       }
     });
   }
 
-
   editItem(element: any): void {
-    const initialState: Partial<EditItemComponent> = {
-      item: element,
-    };
-    this.modalRef = this.bsModalService.show(EditItemComponent, {
-      initialState,
-    });
-    this.modalRef.content.onClose.subscribe(() => {
+    const modalRef = this.modalService.open(EditItemComponent, {});
+    modalRef.componentInstance.item = element; // Passando o item para o componente EditItemComponent
+    modalRef.componentInstance.onClose.subscribe(() => {
       this.getItem();
     });
   }
@@ -118,7 +104,7 @@ export class ListComponent {
         .subscribe(
           (res: any) => {
             alert('Produto excluído com sucesso!');
-            window.location.reload()
+            window.location.reload();
             this.getItem();
           },
           (error: any) => {

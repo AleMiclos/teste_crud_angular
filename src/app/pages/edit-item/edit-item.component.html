@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">Editar Produto</h4>
-  <button type="button" class="close" aria-label="Close" (click)="bsModalRef.hide()">
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -25,6 +25,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Cancelar</button>
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancelar</button>
   <button type="button" class="btn btn-primary" (click)="editarProduto()">Salvar</button>
 </div>

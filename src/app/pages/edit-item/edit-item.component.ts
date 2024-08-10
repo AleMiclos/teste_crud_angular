@@ -5,17 +5,17 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { API_URL } from '../../core/environments';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-edit-item',
   templateUrl: './edit-item.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, HttpClientModule],
+  imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
   styleUrls: ['./edit-item.component.css'],
 })
 export class EditItemComponent implements OnInit {
@@ -23,9 +23,10 @@ export class EditItemComponent implements OnInit {
   @Output() onClose = new EventEmitter<void>();
 
   formProduto: FormGroup;
+bsModalRef: any;
 
   constructor(
-    public bsModalRef: BsModalRef,
+    public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private http: HttpClient
   ) {
@@ -61,7 +62,7 @@ export class EditItemComponent implements OnInit {
             if (res.success) {
               console.log('Produto atualizado com sucesso!');
               this.onClose.emit();
-              this.bsModalRef.hide();
+              this.activeModal.close();
             } else {
               console.error('Erro ao atualizar produto:', res.message);
             }
