@@ -10,7 +10,7 @@ import { API_URL } from '../../core/environments';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule,HttpClientModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [HttpClientModule]

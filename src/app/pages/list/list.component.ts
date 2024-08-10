@@ -1,7 +1,7 @@
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NewItemComponent } from '../new-item/new-item.component';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -11,7 +11,7 @@ import { EditItemComponent } from '../edit-item/edit-item.component';
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [MatTableModule, HttpClientModule, ReactiveFormsModule, CommonModule],
+  imports: [MatTableModule,HttpClientModule, ReactiveFormsModule, CommonModule],
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })

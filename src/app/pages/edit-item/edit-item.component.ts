@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { API_URL } from '../../core/environments';
@@ -23,7 +17,6 @@ export class EditItemComponent implements OnInit {
   @Output() onClose = new EventEmitter<void>();
 
   formProduto: FormGroup;
-bsModalRef: any;
 
   constructor(
     public activeModal: NgbActiveModal,
